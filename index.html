@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16型人格深度测评 | 发现真实的自己</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 引入Chart.js用于绘制雷达图 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 只引入一次Supabase -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2" crossorigin="anonymous"></script>
+    <!-- 移动端优化 -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+<!-- 禁止缩放 -->
+<meta name="HandheldFriendly" content="true">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+</head>
+<body class="loading">
+    <div class="container">
+        <!-- 第一步：输入兑换码 -->
+        <div id="code-box">
+            <h1>🔐 解锁你的灵魂图谱</h1>
+            <p>请输入您获得的唯一兑换码，开启16型人格探索之旅</p>
+            <input type="text" id="code-input" placeholder="例如：BMTI001" autocomplete="off">
+            <br>
+            <button id="unlock-btn">立即解锁测试</button>
+            <p id="code-hint"></p>
+            <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
+                💡 测试兑换码：BMTI001, TEST001, MBTI001, DEMO123, FREE001
+            </p>
+        </div>
+
+        <!-- 第二步：开始做题 -->
+        <div id="test-box" class="hidden">
+            <h1>🧩 16型人格测试</h1>
+            <p><small>共60题，请根据第一直觉选择</small></p>
+            
+            <div id="questionContainer"></div>
+            
+            <div class="progress-info">
+                <span id="progress-text">第 1/60 题</span>
+                <progress id="progress-bar" value="1" max="60"></progress>
+            </div>
+            
+            <div class="pagination-controls">
+                <button id="prev-btn" disabled>◀ 上一题</button>
+                <button id="next-btn">下一题 ▶</button>
+            </div>
+            
+            <button id="submit-btn" class="hidden" disabled>
+                完成所有 60 题后解锁
+            </button>
+        </div>
+
+        <!-- 第三步：查看报告 -->
+        <div id="report-box" class="hidden">
+            <!-- 报告头部 -->
+            <div class="report-header" style="text-align: center; margin-bottom: 40px;">
+                <h1 style="color: #4f46e5; margin-bottom: 15px;">📊 你的灵魂图谱分析报告</h1>
+                <p style="color: #6b7280; font-size: 16px;">基于60道核心母题的深度洞察</p>
+                <div class="report-meta" style="display: flex; justify-content: center; gap: 30px; margin-top: 20px; color: #9ca3af; font-size: 14px;">
+                    <span>📅 报告时间：<span id="report-date">2024年</span></span>
+                    <span>🔢 报告ID：<span id="report-id">MBTI-INFJ</span></span>
+                </div>
+            </div>
+
+           <!-- 第一层：身份定位 -->
+<div class="report-section">
+    <h2>第一层：身份定位</h2>
+    
+    <!-- 1.1 核心人格画像 -->
+    <div class="report-card main-personality-card">
+        <!-- 人格类型徽章 - 移到顶部 -->
+        <div style="text-align: center; margin-bottom: 30px;">
+            <div style="display: inline-block; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 15px 40px; border-radius: 50px; border: 2px solid rgba(255,255,255,0.3);">
+                <div style="font-size: 14px; opacity: 0.9; margin-bottom: 5px;">人格类型</div>
+                <div id="personality-type-badge" style="font-size: 42px; font-weight: bold; color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.3);">INFJ</div>
+            </div>
+        </div>
+        
+        <!-- 核心人格蓝图标题 -->
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h1 style="font-size: 32px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.2); margin: 0;">
+                🎭 你的本质人格蓝图
+            </h1>
+            <p style="opacity: 0.9; margin-top: 10px; color: rgba(255,255,255,0.9); font-size: 16px;">
+                基于60道核心母题的深度洞察
+            </p>
+        </div>
+        
+        <!-- 核心信息突出显示 -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px;">
+            <!-- 角色名称 -->
+            <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
+                <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                    <div style="background: rgba(255,255,255,0.2); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 20px;">
+                        <span style="font-size: 24px;">👑</span>
+                    </div>
+                    <div>
+                        <div style="font-size: 14px; opacity: 0.9; margin-bottom: 5px; color: rgba(255,255,255,0.9);">角色名称</div>
+                        <div id="role-name" style="font-size: 28px; font-weight: bold; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">提倡者</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 类型定义 -->
+            <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
+                <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                    <div style="background: rgba(255,255,255,0.2); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 20px;">
+                        <span style="font-size: 24px;">✨</span>
+                    </div>
+                    <div>
+                        <div style="font-size: 14px; opacity: 0.9; margin-bottom: 5px; color: rgba(255,255,255,0.9);">人格定义</div>
+                        <div id="type-definition" style="font-size: 16px; line-height: 1.6; color: white; font-weight: 500;">
+                            富有想象力且意志坚定的理想主义者，总能基于自己的价值观和对他人的关怀来采取行动。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 核心特质标签 -->
+        <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
+            <h3 style="color: white; margin-bottom: 20px; text-align: center; font-size: 20px;">
+                🏷️ 核心特质标签
+            </h3>
+            <div id="type-traits" style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
+                <div style="background: rgba(255,255,255,0.15); padding: 10px 20px; border-radius: 50px; font-size: 14px; border: 1px solid rgba(255,255,255,0.2); color: white;">直觉型思考者</div>
+                <div style="background: rgba(255,255,255,0.15); padding: 10px 20px; border-radius: 50px; font-size: 14px; border: 1px solid rgba(255,255,255,0.2); color: white;">情感驱动决策</div>
+                <div style="background: rgba(255,255,255,0.15); padding: 10px 20px; border-radius: 50px; font-size: 14px; border: 1px solid rgba(255,255,255,0.2); color: white;">理想主义导向</div>
+                <div style="background: rgba(255,255,255,0.15); padding: 10px 20px; border-radius: 50px; font-size: 14px; border: 1px solid rgba(255,255,255,0.2); color: white;">深度洞察力</div>
+            </div>
+        </div>
+        
+        <!-- 人格简介 -->
+        <div style="margin-top: 30px; padding: 25px; background: rgba(0,0,0,0.2); border-radius: 20px; border-left: 4px solid rgba(255,255,255,0.3);">
+            <h4 style="color: white; margin-bottom: 15px; font-size: 18px;">📋 人格简介</h4>
+            <p id="personality-summary" style="color: rgba(255,255,255,0.9); line-height: 1.6; font-size: 15px; margin: 0;">
+                作为INFJ，你是最稀有的人格类型之一，仅占人口的1-2%。你拥有独特的洞察力，能够理解复杂的心理动态。你既是理想主义者，又是脚踏实地的实践者，总是在寻找方法来改善他人的生活。
+            </p>
+        </div>
+    </div>
+</div>
+
+            <!-- 第二层：多维剖析 -->
+            <div class="report-section">
+                <h2>第二层：多维剖析</h2>
+                
+                <!-- 2.1 内在状态仪表盘 -->
+                <div class="report-card">
+                    <h3 style="color: #10b981; margin-bottom: 20px;">📈 内在状态仪表盘</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 30px;">
+                        <!-- 心智阶段 -->
+                        <div style="border: 1px solid #e5e7eb; padding: 20px; border-radius: 15px;">
+                            <h4 style="margin: 0 0 15px 0; color: #4f46e5;">🧠 心智阶段</h4>
+                            <div id="mind-stage" style="font-size: 18px; font-weight: bold; color: #059669; margin-bottom: 10px;">中阶觉醒</div>
+                            <div style="background: #f3f4f6; height: 10px; border-radius: 5px; overflow: hidden;">
+                                <div id="mind-stage-bar" style="background: linear-gradient(90deg, #10b981, #34d399); height: 100%; width: 65%;"></div>
+                            </div>
+                            <p id="mind-stage-desc" style="margin-top: 10px; color: #6b7280; font-size: 14px;">你已具备一定的自我觉察能力，开始理解自己的行为模式</p>
+                        </div>
+                        
+                        <!-- 能量循环 -->
+                        <div style="border: 1px solid #e5e7eb; padding: 20px; border-radius: 15px;">
+                            <h4 style="margin: 0 0 15px 0; color: #4f46e5;">⚡ 能量循环</h4>
+                            <div id="energy-cycle" style="font-size: 18px; font-weight: bold; color: #f59e0b; margin-bottom: 10px;">动态平衡</div>
+                            <div style="display: flex; align-items: center; margin-top: 15px;">
+                                <div style="flex: 1; text-align: center;">
+                                    <div style="font-size: 14px; color: #6b7280;">外向能量</div>
+                                    <div id="energy-E" style="font-size: 20px; font-weight: bold; color: #3b82f6;">40%</div>
+                                </div>
+                                <div style="width: 100px; height: 10px; background: linear-gradient(90deg, #3b82f6, #8b5cf6); border-radius: 5px;"></div>
+                                <div style="flex: 1; text-align: center;">
+                                    <div style="font-size: 14px; color: #6b7280;">内向能量</div>
+                                    <div id="energy-I" style="font-size: 20px; font-weight: bold; color: #8b5cf6;">60%</div>
+                                </div>
+                            </div>
+                            <p id="energy-cycle-desc" style="margin-top: 15px; color: #6b7280; font-size: 14px;">你能在社交与独处间找到平衡点，但偶尔会感到能量波动</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 八维属性雷达图容器 -->
+                    <div style="margin-top: 30px;">
+                        <h4 style="color: #4f46e5; margin-bottom: 20px;">🎯 八维属性雷达图</h4>
+                        <div style="display: flex; justify-content: center; padding: 20px; background: #f9fafb; border-radius: 15px;">
+                            <canvas id="attribute-radar" width="400" height="400"></canvas>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 12px; height: 12px; background: #3b82f6; border-radius: 50%; margin-right: 10px;"></div>
+                                <span>社交电量：<span id="attr-social" class="attr-value">75%</span></span>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 12px; height: 12px; background: #10b981; border-radius: 50%; margin-right: 10px;"></div>
+                                <span>自洽指数：<span id="attr-self" class="attr-value">68%</span></span>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 12px; height: 12px; background: #f59e0b; border-radius: 50%; margin-right: 10px;"></div>
+                                <span>行动燃料：<span id="attr-action" class="attr-value">52%</span></span>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 12px; height: 12px; background: #ef4444; border-radius: 50%; margin-right: 10px;"></div>
+                                <span>情绪免疫力：<span id="attr-emotion" class="attr-value">81%</span></span>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 12px; height: 12px; background: #8b5cf6; border-radius: 50%; margin-right: 10px;"></div>
+                                <span>视野格局：<span id="attr-vision" class="attr-value">90%</span></span>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 12px; height: 12px; background: #ec4899; border-radius: 50%; margin-right: 10px;"></div>
+                                <span>脑力在线：<span id="attr-brain" class="attr-value">78%</span></span>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 12px; height: 12px; background: #14b8a6; border-radius: 50%; margin-right: 10px;"></div>
+                                <span>边界清晰度：<span id="attr-boundary" class="attr-value">45%</span></span>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 12px; height: 12px; background: #f97316; border-radius: 50%; margin-right: 10px;"></div>
+                                <span>心灵富足：<span id="attr-soul" class="attr-value">85%</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2.2 认知功能详解（已移动到第二层） -->
+                <div class="report-card">
+                    <h3 style="color: #8b5cf6; margin-bottom: 20px;">🧩 认知功能详解</h3>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <h4 style="color: #374151; margin-bottom: 15px; font-size: 18px;">📊 你的功能排序</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                            <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
+                                <div style="color: #10b981; font-weight: bold; margin-bottom: 8px;">主导功能</div>
+                                <div id="dominant-function" style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">Ni - 内倾直觉</div>
+                                <div style="font-size: 14px; color: #6b7280; line-height: 1.5;">你最自然、最擅长的思维方式，是你的核心优势所在</div>
+                            </div>
+                            <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
+                                <div style="color: #3b82f6; font-weight: bold; margin-bottom: 8px;">辅助功能</div>
+                                <div id="auxiliary-function" style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">Fe - 外倾情感</div>
+                                <div style="font-size: 14px; color: #6b7280; line-height: 1.5;">支持主导功能的第二能力，帮助你与他人和世界互动</div>
+                            </div>
+                            <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
+                                <div style="color: #f59e0b; font-weight: bold; margin-bottom: 8px;">第三功能</div>
+                                <div id="tertiary-function" style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">Ti - 内倾思考</div>
+                                <div style="font-size: 14px; color: #6b7280; line-height: 1.5;">发展中功能，在压力或成长时会更明显</div>
+                            </div>
+                            <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
+                                <div style="color: #ef4444; font-weight: bold; margin-bottom: 8px;">劣势功能</div>
+                                <div id="inferior-function" style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">Se - 外倾实感</div>
+                                <div style="font-size: 14px; color: #6b7280; line-height: 1.5;">有待发展的功能，可能带来挑战也是成长机会</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 认知功能说明 -->
+                    <div style="background: white; padding: 20px; border-radius: 15px; border-left: 4px solid #8b5cf6;">
+                        <h4 style="color: #8b5cf6; margin-bottom: 15px; font-size: 18px;">💡 认知功能说明</h4>
+                        <div style="font-size: 15px; line-height: 1.6; color: #4b5563;">
+                            <p><strong>认知功能是MBTI理论的核心</strong>，描述了人们处理信息和做出决策的不同方式。每个人都有四个主要功能，按发展程度排序：</p>
+                            <ul style="padding-left: 20px; margin-top: 10px;">
+                                <li><strong>主导功能</strong>：最自然、最常用的思维方式，是你的核心优势</li>
+                                <li><strong>辅助功能</strong>：支持主导功能，帮助你平衡内在与外在世界</li>
+                                <li><strong>第三功能</strong>：年轻时不明显，随着年龄增长会逐渐发展</li>
+                                <li><strong>劣势功能</strong>：最具挑战性，但发展后能带来最大成长</li>
+                            </ul>
+                            <p style="margin-top: 15px;">了解自己的功能排序，能帮助你更有效地发挥优势，并有意识发展待提升的部分。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2.3 天赋与盲区 -->
+                <div class="report-card">
+                    <h3 style="color: #f59e0b; margin-bottom: 20px;">⚖️ 天赋与盲区</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                        <!-- 核心原力 -->
+                        <div style="border: 2px solid #10b981; padding: 25px; border-radius: 15px; background: #f0fdf4;">
+                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                                <div style="background: #10b981; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px;">
+                                    ✨
+                                </div>
+                                <h4 style="margin: 0; color: #065f46;">核心原力</h4>
+                            </div>
+                            <ul id="core-strengths" style="padding-left: 20px; margin: 0;">
+                                <li>深邃的洞察力与共情能力</li>
+                                <li>强大的理想主义与使命感</li>
+                                <li>创造性的问题解决思维</li>
+                                <li>坚定不移的个人价值观</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- 潜在暗面 -->
+                        <div style="border: 2px solid #ef4444; padding: 25px; border-radius: 15px; background: #fef2f2;">
+                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                                <div style="background: #ef4444; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px;">
+                                    ⚠️
+                                </div>
+                                <h4 style="margin: 0; color: #7f1d1d;">潜在暗面</h4>
+                            </div>
+                            <ul id="potential-shadows" style="padding-left: 20px; margin: 0;">
+                                <li>过度理想化导致现实落差</li>
+                                <li>忽视自身需求过度付出</li>
+                                <li>完美主义导致的拖延</li>
+                                <li>对批评过于敏感</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第三层：关系与成长 -->
+            <div class="report-section">
+                <h2>第三层：关系与成长</h2>
+                
+                <!-- 3.1 关系适配地图 -->
+                <div class="report-card">
+                    <h3 style="color: #8b5cf6; margin-bottom: 20px;">💞 关系适配地图</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                        <!-- 灵魂共鸣 -->
+                        <div style="text-align: center; padding: 20px; border: 2px solid #a78bfa; border-radius: 15px; background: #f5f3ff;">
+                            <div style="font-size: 40px; margin-bottom: 10px;">💖</div>
+                            <h4 style="margin: 0 0 10px 0; color: #7c3aed;">灵魂共鸣</h4>
+                            <div id="soulmate-type" style="font-size: 24px; font-weight: bold; color: #7c3aed; margin-bottom: 10px;">ENFP / ENTP</div>
+                            <p style="color: #6b7280; font-size: 14px; margin: 0;">与你共享探索精神，能激发彼此潜能的伴侣</p>
+                        </div>
+                        
+                        <!-- 最佳拍档 -->
+                        <div style="text-align: center; padding: 20px; border: 2px solid #60a5fa; border-radius: 15px; background: #eff6ff;">
+                            <div style="font-size: 40px; margin-bottom: 10px;">🤝</div>
+                            <h4 style="margin: 0 0 10px 0; color: #2563eb;">最佳拍档</h4>
+                            <div id="partner-type" style="font-size: 24px; font-weight: bold; color: #2563eb; margin-bottom: 10px;">ESTJ / ESFJ</div>
+                            <p style="color: #6b7280; font-size: 14px; margin: 0;">与你形成互补，在现实事务中提供支持的伙伴</p>
+                        </div>
+                        
+                        <!-- 充电类型 -->
+                        <div style="text-align: center; padding: 20px; border: 2px solid #34d399; border-radius: 15px; background: #f0fdf4;">
+                            <div style="font-size: 40px; margin-bottom: 10px;">⚡</div>
+                            <h4 style="margin: 0 0 10px 0; color: #059669;">充电类型</h4>
+                            <div id="energy-boost-type" style="font-size: 24px; font-weight: bold; color: #059669; margin-bottom: 10px;">INFP / ISFP</div>
+                            <p style="color: #6b7280; font-size: 14px; margin: 0;">能与你深度共情，让你感到被理解的类型</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 3.2 专属成长路线图 -->
+                <div class="report-card">
+                    <h3 style="color: #ec4899; margin-bottom: 20px;">🌱 专属成长路线图</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                        <!-- 近期行动锦囊 -->
+                        <div style="padding: 25px; border-radius: 15px; background: linear-gradient(135deg, #fdf2f8, #fce7f3);">
+                            <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                                <div style="background: #ec4899; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px;">
+                                    📝
+                                </div>
+                                <h4 style="margin: 0; color: #be185d;">近期行动锦囊 (1-3周)</h4>
+                            </div>
+                            <ol id="action-tips" style="padding-left: 20px; margin: 0;">
+                                <li>每天设定15分钟的"自我关怀时间"</li>
+                                <li>尝试对非重要请求说"不"，练习设立边界</li>
+                                <li>每周完成一项小目标，避免完美主义拖延</li>
+                                <li>记录三次"过度付出"的情况并反思</li>
+                            </ol>
+                        </div>
+                        
+                        <!-- 长期进化方向 -->
+                        <div style="padding: 25px; border-radius: 15px; background: linear-gradient(135deg, #f0f9ff, #e0f2fe);">
+                            <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                                <div style="background: #0ea5e9; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px;">
+                                    🚀
+                                </div>
+                                <h4 style="margin: 0; color: #0369a1;">长期进化方向 (1-3年)</h4>
+                            </div>
+                            <ul id="evolution-direction" style="padding-left: 20px; margin: 0;">
+                                <li>发展外倾实感(Se)，增强现实感知与行动力</li>
+                                <li>平衡理想与现实，将愿景转化为可执行的计划</li>
+                                <li>建立可持续的能量管理机制</li>
+                                <li>培养健康的自我表达与坚持主张的能力</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- 关键认知升级 -->
+                    <div style="margin-top: 30px; padding: 25px; background: linear-gradient(135deg, #fefce8, #fef9c3); border-radius: 15px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <div style="background: #eab308; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px;">
+                                💡
+                            </div>
+                            <h4 style="margin: 0; color: #a16207;">关键认知升级</h4>
+                        </div>
+                        <p id="key-insight" style="margin: 0; line-height: 1.6; font-size: 16px;">
+                            <strong>"完美不是目标，完整才是。"</strong> 接纳自己的局限性，理解成长是一个持续的过程而非终点。你的价值不在于拯救世界，而在于在每日的小选择中保持真实与善良。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 报告底部 -->
+            <div class="report-footer">
+                <!-- 重要提示 -->
+                <div class="warning-box">
+                    <h4>⚠️ 重要提示</h4>
+                    <div>
+                        <p style="margin: 10px 0;"><strong>请立即截图</strong>或使用浏览器的<strong>"打印"功能（快捷键 Ctrl+P）</strong>保存此报告。</p>
+                        <p style="margin: 10px 0;">关闭页面后，所有数据将<strong>不会被保存</strong>。</p>
+                        <p style="margin: 10px 0;">人格测试是自我探索的工具，而非人生定论。每个人都有无限成长的可能！</p>
+                    </div>
+                </div>
+                
+                <!-- 分享按钮 -->
+                <div style="margin-bottom: 20px;">
+                    <button id="share-btn" style="padding: 12px 30px; background: linear-gradient(135deg, #ec4899, #d946ef); color: white; border: none; border-radius: 50px; font-size: 16px; font-weight: 500; cursor: pointer; margin-right: 15px;">
+                        📱 分享结果
+                    </button>
+                    <button id="restart-btn" style="padding: 12px 30px; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 50px; font-size: 16px; font-weight: 500; cursor: pointer;">
+                        🔄 重新测试
+                    </button>
+                </div>
+                
+                <p style="color: #9ca3af; font-size: 14px;">© 2024 灵魂图谱分析 | 本报告基于MBTI理论及心理学原理生成</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 链接JavaScript文件 -->
+    <script src="script.js"></script>
+</body>
+</html>

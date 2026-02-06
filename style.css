@@ -1,0 +1,870 @@
+/* ========== 16型人格测试 - 修复版样式 ========== */
+:root {
+    --primary: #4f46e5;
+    --primary-light: #818cf8;
+    --primary-dark: #4338ca;
+    --secondary: #10b981;
+    --accent: #f59e0b;
+    --danger: #ef4444;
+    --background: #f8fafc;
+    --surface: #ffffff;
+    --text: #1f2937;
+    --text-light: #6b7280;
+    --border: #e5e7eb;
+    --shadow: rgba(0, 0, 0, 0.08);
+}
+
+/* 重置和基础样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    line-height: 1.6;
+    background-color: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: var(--surface);
+    width: 100%;
+    max-width: 800px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px var(--shadow);
+    padding: 40px;
+    border: 1px solid var(--border);
+}
+
+/* 隐藏类 */
+.hidden {
+    display: none !important;
+}
+
+/* 兑换码页面 */
+#code-box {
+    text-align: center;
+}
+
+#code-box h1 {
+    color: var(--primary);
+    font-size: 32px;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+#code-box p {
+    color: var(--text-light);
+    margin-bottom: 30px;
+    font-size: 18px;
+}
+
+#code-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 16px 20px;
+    font-size: 18px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    margin: 20px auto;
+    display: block;
+    transition: all 0.3s;
+}
+
+#code-input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+#unlock-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    border: none;
+    padding: 16px 40px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 20px 0;
+    display: inline-block;
+    min-width: 200px;
+}
+
+#unlock-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+}
+
+#unlock-btn:disabled {
+    background: #d1d5db;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+#code-hint {
+    min-height: 24px;
+    margin-top: 15px;
+    font-size: 16px;
+}
+
+/* 测试页面 */
+#test-box {
+    text-align: center;
+}
+
+#test-box h1 {
+    color: var(--primary);
+    margin-bottom: 10px;
+    font-size: 32px;
+}
+
+#test-box p {
+    color: var(--text-light);
+    margin-bottom: 30px;
+}
+
+/* 题目容器 */
+#questionContainer {
+    text-align: left;
+    margin: 30px 0;
+}
+
+.question-card {
+    background: var(--surface);
+    padding: 30px;
+    border-radius: 16px;
+    border: 2px solid var(--border);
+    margin-bottom: 25px;
+    transition: all 0.3s;
+}
+
+.question-card:hover {
+    border-color: var(--primary-light);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.question-card label {
+    display: block;
+    padding: 18px 20px;
+    margin: 12px 0;
+    background: var(--background);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.question-card label:hover {
+    background: #f1f5f9;
+    border-color: var(--border);
+}
+
+.question-card input[type="radio"] {
+    margin-right: 12px;
+    transform: scale(1.2);
+}
+
+/* 进度条 */
+.progress-info {
+    margin: 30px 0;
+    text-align: center;
+}
+
+#progress-text {
+    display: block;
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+#progress-bar {
+    width: 100%;
+    height: 12px;
+    border-radius: 6px;
+    background: var(--border);
+    overflow: hidden;
+}
+
+#progress-bar::-webkit-progress-bar {
+    background: var(--border);
+}
+
+#progress-bar::-webkit-progress-value {
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    border-radius: 6px;
+}
+
+/* 分页控制 */
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 40px 0;
+}
+
+#prev-btn, #next-btn {
+    flex: 1;
+    padding: 16px 24px;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#prev-btn {
+    background: var(--background);
+    color: var(--text);
+    border: 2px solid var(--border);
+}
+
+#prev-btn:hover:not(:disabled) {
+    background: #f1f5f9;
+    border-color: var(--primary-light);
+}
+
+#prev-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#next-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+}
+
+#next-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+}
+
+/* 提交按钮 */
+#submit-btn {
+    background: linear-gradient(135deg, var(--secondary), #34d399);
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 20px;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 20px;
+}
+
+#submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+}
+
+#submit-btn:disabled {
+    background: #d1d5db;
+    color: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* 报告页面 */
+.report-section {
+    margin: 50px 0;
+}
+
+.report-section h2 {
+    font-size: 28px;
+    color: var(--text);
+    border-left: 6px solid var(--primary);
+    padding-left: 20px;
+    margin-bottom: 30px;
+}
+
+.report-card {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 30px;
+    margin: 30px 0;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* 核心人格画像卡片 - 修改这里！ */
+.main-personality-card {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+    color: white;
+    border: none;
+    box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.main-personality-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    z-index: 1;
+}
+
+.main-personality-card > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* 按钮组 */
+.report-footer {
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+}
+
+#share-btn, #restart-btn {
+    padding: 16px 32px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 10px;
+    min-width: 200px;
+}
+
+#share-btn {
+    background: linear-gradient(135deg, #ec4899, #d946ef);
+    color: white;
+    border: none;
+}
+
+#restart-btn {
+    background: var(--surface);
+    color: var(--text);
+    border: 2px solid var(--border);
+}
+
+#share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3);
+}
+
+#restart-btn:hover {
+    background: var(--background);
+    border-color: var(--primary-light);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    .container {
+        padding: 25px;
+        border-radius: 16px;
+    }
+    
+    #code-box h1, #test-box h1 {
+        font-size: 28px;
+    }
+    
+    .question-card {
+        padding: 20px;
+    }
+    
+    .pagination-controls {
+        flex-direction: column;
+    }
+    
+    #prev-btn, #next-btn {
+        width: 100%;
+    }
+    
+    .report-card {
+        padding: 20px;
+    }
+    
+    #share-btn, #restart-btn {
+        width: 100%;
+        margin: 10px 0;
+    }
+}
+
+/* 加载动画 */
+.loading {
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 4px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 徽章样式 */
+.badge {
+    display: inline-block;
+    padding: 8px 16px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+/* 警告框 */
+.warning-box {
+    background: linear-gradient(135deg, #fff7ed, #ffedd5);
+    border-left: 5px solid #f97316;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 25px 0;
+    color: #7c2d12;
+}
+
+.warning-box h4 {
+    color: #c2410c;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+/* 未完成提醒按钮样式 */
+#submit-btn.warning {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24) !important;
+    color: white !important;
+}
+
+#submit-btn.warning:hover {
+    background: linear-gradient(135deg, #d97706, #f59e0b) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3) !important;
+}
+/* ========== 移动端优先设计 ========== */
+/* 基础移动端样式 */
+@media (max-width: 767px) {
+    body {
+        padding: 10px;
+        font-size: 16px;
+    }
+    
+    .container {
+        padding: 20px;
+        border-radius: 16px;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    
+    /* 兑换码页面移动端优化 */
+    #code-box h1 {
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+    
+    #code-box p {
+        font-size: 16px;
+        margin-bottom: 25px;
+    }
+    
+    #code-input {
+        font-size: 16px;
+        padding: 14px;
+        max-width: 100%;
+    }
+    
+    #unlock-btn {
+        padding: 14px 30px;
+        font-size: 16px;
+        min-width: 100%;
+        margin: 15px 0;
+    }
+    
+    /* 测试页面移动端优化 */
+    #test-box h1 {
+        font-size: 28px;
+    }
+    
+    .question-card {
+        padding: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .question-card label {
+        padding: 16px;
+        margin: 8px 0;
+        font-size: 15px;
+    }
+    
+    /* 进度条优化 */
+    #progress-text {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+    
+    #progress-bar {
+        height: 8px;
+    }
+    
+    /* 按钮组优化 */
+    .pagination-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    #prev-btn, #next-btn {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+    }
+    
+    #submit-btn {
+        padding: 16px;
+        font-size: 18px;
+        margin-top: 15px;
+    }
+    
+    /* 报告页面移动端优化 */
+    .report-section {
+        margin: 30px 0;
+    }
+    
+    .report-section h2 {
+        font-size: 22px;
+        padding-left: 15px;
+        border-left-width: 4px;
+    }
+    
+    .report-card {
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    /* 核心人格卡片移动端优化 */
+    .main-personality-card {
+        padding: 20px 15px;
+    }
+    
+    .main-personality-card h1 {
+        font-size: 24px;
+    }
+    
+    .personality-badge {
+        font-size: 36px;
+        padding: 10px 25px;
+    }
+    
+    /* 核心信息卡片 */
+    .main-personality-card > div:nth-child(3) {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    /* 按钮组移动端优化 */
+    .report-footer > div:first-child {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    #share-btn, #export-pdf-btn, #restart-btn {
+        width: 100%;
+        margin: 0 0 10px 0;
+        padding: 14px;
+        font-size: 16px;
+    }
+    
+    /* 警告框优化 */
+    .warning-box {
+        padding: 20px;
+        font-size: 14px;
+    }
+}
+
+/* 小屏幕手机（iPhone SE等）优化 */
+@media (max-width: 375px) {
+    .container {
+        padding: 15px;
+    }
+    
+    #code-box h1, #test-box h1 {
+        font-size: 24px;
+    }
+    
+    .question-card {
+        padding: 15px;
+    }
+    
+    .question-card label {
+        padding: 14px;
+        font-size: 14px;
+    }
+    
+    .report-card {
+        padding: 15px;
+    }
+    
+    .main-personality-card h1 {
+        font-size: 22px;
+    }
+    
+    .personality-badge {
+        font-size: 32px;
+    }
+}
+
+/* 平板设备优化 */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .container {
+        padding: 30px;
+        max-width: 90%;
+    }
+    
+    .main-personality-card > div:nth-child(3) {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+    /* 增大触摸目标 */
+    input[type="radio"] {
+        min-width: 20px;
+        min-height: 20px;
+    }
+    
+    label {
+        min-height: 50px;
+    }
+    
+    button {
+        min-height: 50px;
+    }
+    
+    /* 移除hover效果，避免移动端误触 */
+    button:hover {
+        transform: none;
+    }
+    
+    #unlock-btn:hover:not(:disabled) {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    #submit-btn:hover:not(:disabled) {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    #share-btn:hover, #restart-btn:hover {
+        transform: none;
+    }
+}
+
+/* 防止移动端缩放 */
+input, select, textarea {
+    font-size: 16px; /* 防止iOS自动缩放 */
+}
+
+/* 优化长按选择 */
+* {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-touch-callout: none;
+}
+
+/* 优化滚动体验 */
+html {
+    -webkit-overflow-scrolling: touch;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+/* 移动端键盘弹出优化 */
+@media (max-height: 600px) {
+    #code-box, #test-box, #report-box {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    #questionContainer {
+        flex: 1;
+    }
+}
+/* ========== 移动端专属优化 ========== */
+/* 小屏幕手机（iPhone SE等） */
+@media (max-width: 375px) {
+    .container {
+        padding: 15px;
+        margin: 5px;
+    }
+    
+    #code-box h1, #test-box h1 {
+        font-size: 24px;
+        line-height: 1.3;
+    }
+    
+    .question-card {
+        padding: 15px;
+        margin: 10px -10px;
+    }
+    
+    .question-card label {
+        padding: 14px;
+        margin: 8px 0;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    
+    /* 兑换码显示优化 */
+    .code-display {
+        font-size: 18px !important;
+        letter-spacing: 1px !important;
+        word-break: break-all;
+        padding: 10px !important;
+    }
+    
+    /* 按钮优化 */
+    button {
+        min-height: 44px; /* 苹果推荐的最小触摸目标 */
+        padding: 12px 20px !important;
+    }
+    
+    /* 进度条优化 */
+    #progress-text {
+        font-size: 14px;
+    }
+    
+    #progress-bar {
+        height: 6px;
+    }
+}
+
+/* 中等屏幕手机 */
+@media (min-width: 376px) and (max-width: 428px) {
+    .container {
+        padding: 20px;
+    }
+    
+    .question-card label {
+        padding: 16px;
+        font-size: 15px;
+    }
+}
+
+/* 横屏模式优化 */
+@media (max-height: 500px) and (orientation: landscape) {
+    .container {
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 15px;
+    }
+    
+    #questionContainer {
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+    
+    .pagination-controls {
+        position: sticky;
+        bottom: 0;
+        background: white;
+        padding: 10px 0;
+        margin-top: 10px;
+    }
+}
+
+/* 防止iOS输入框缩放 */
+@media screen and (max-width: 767px) {
+    input, select, textarea {
+        font-size: 16px !important;
+    }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+    /* 增大触摸目标 */
+    .question-card label {
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+    }
+    
+    input[type="radio"] {
+        width: 20px;
+        height: 20px;
+        margin-right: 12px;
+    }
+    
+    /* 移除hover效果 */
+    button:hover, label:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+    
+    /* 活动状态反馈 */
+    button:active, label:active {
+        transform: scale(0.98) !important;
+        opacity: 0.9;
+    }
+}
+
+/* 暗色模式支持 */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #111827;
+        color: #f9fafb;
+    }
+    
+    .container {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+    
+    .question-card {
+        background-color: #374151;
+        border-color: #4b5563;
+    }
+    
+    .question-card label {
+        background-color: #4b5563;
+    }
+}
+
+/* 减少动画以节省电量 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
