@@ -942,7 +942,7 @@
         }
     }
     
-    // 5. 渲染报告 - 修复版
+   // 修改后的 renderReport 函数（部分）：
 function renderReport(reportData) {
     const { type, typeData, attributes, mindStage, mindStagePercent, mindStageDesc, energyCycle, energyCycleDesc, energyE, energyI, date } = reportData;
     
@@ -960,26 +960,13 @@ function renderReport(reportData) {
     if (reportDateEl) reportDateEl.textContent = date;
     if (reportIdEl) reportIdEl.textContent = `MBTI${type}`;
         
-         // 2. 更新核心人格画像
+    // 2. 更新核心人格画像
     const roleNameEl = document.getElementById('role-name');
     const typeDefinitionEl = document.getElementById('type-definition');
-    const personalitySummaryEl = document.getElementById('personality-summary');
     
     if (roleNameEl) roleNameEl.textContent = typeData.role;
     if (typeDefinitionEl) typeDefinitionEl.textContent = typeData.definition;
     
-    // 添加人格简介
-    if (personalitySummaryEl) {
-        // 根据类型添加不同的人格简介
-        const summaryMap = {
-            'INFJ': '作为INFJ，你是最稀有的人格类型之一，仅占人口的1-2%。你拥有独特的洞察力，能够理解复杂的心理动态。你既是理想主义者，又是脚踏实地的实践者，总是在寻找方法来改善他人的生活。',
-            'INTP': '作为INTP，你是天生的思想家和哲学家。你对抽象概念着迷，喜欢探索理论和模式。你独立、理性，总是在追求知识和真理。',
-            'ISFP': '作为ISFP，你是真正的艺术家和探险家。你活在当下，欣赏生活中的美好事物，并拥有强烈的个人价值观。你敏感、温柔，但内心独立且坚韧。',
-            // 添加其他人格的简介...
-        };
-        
-        personalitySummaryEl.textContent = summaryMap[type] || typeData.definition;
-    }
         
         // 更新认知功能详细显示 - 确保元素存在
         if (typeData.cognitiveStack) {
